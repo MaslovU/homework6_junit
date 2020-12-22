@@ -1,7 +1,9 @@
 package homework6;
 
-import org.junit.jupiter.api.Assertions;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class CheckingAccountTest {
     CheckingAccount checkingAccount = new CheckingAccount();
@@ -14,29 +16,29 @@ class CheckingAccountTest {
         //when
         boolean res = checkingAccount.addMoney(amount);
         //then
-        Assertions.assertTrue(res);
+        assertThat(res, Matchers.is(true));
     }
 
     @Test
     void pay() {
         int amount = 16;
         checkingAccount.setValue(31);
-
         checkingAccount.pay(amount);
+
         int expectedValue = checkingAccount.getValue();
 
-        Assertions.assertEquals(15, expectedValue);
+        assertThat(expectedValue, Matchers.equalTo(15));
     }
 
     @Test
     void payNegative() {
         int amount = 15;
-        checkingAccount.setValue(31);
-
+        checkingAccount.setValue(10);
         checkingAccount.pay(amount);
+
         int expectedValue = checkingAccount.getValue();
 
-        Assertions.assertNotEquals(15, expectedValue);
+        assertThat(expectedValue, Matchers.greaterThanOrEqualTo(10));
     }
 
     @Test
@@ -47,7 +49,7 @@ class CheckingAccountTest {
         checkingAccount.setValue(43);
         checkingAccount.transfer(creditAccount, amount);
 
-        Assertions.assertEquals(28, checkingAccount.getValue());
+        assertThat(28, Matchers.is(checkingAccount.getValue()));
     }
 
     @Test
@@ -58,7 +60,6 @@ class CheckingAccountTest {
         checkingAccount.setValue(43);
         checkingAccount.transfer(creditAccount, amount);
 
-        Assertions.assertNotEquals(28, checkingAccount.getValue());
+        assertThat(43, Matchers.is(checkingAccount.getValue()));
     }
-
 }
